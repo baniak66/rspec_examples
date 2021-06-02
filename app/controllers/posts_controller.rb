@@ -5,7 +5,7 @@ class PostsController < ApplicationController
   def index
     @posts = Post.all
 
-    render json: @posts
+    render json: Posts::Representers::Multiple.new(@posts).call
   end
 
   # GET /posts/1
