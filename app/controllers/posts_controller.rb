@@ -3,9 +3,13 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all
-
-    render json: Posts::Representers::Multiple.new(@posts).call
+    if params[:sample]
+      posts = Posts::UseCases::ImportPosts.new.sample
+      render json: posts
+    else
+      posts = Post.all
+      render json: Posts::Representers::Multiple.new(posts).call
+    end
   end
 
   # GET /posts/1
@@ -15,9 +19,9 @@ class PostsController < ApplicationController
 
   # POST /posts
   def create
-    @post = Post.new(post_params)
+    @post = Posts::UseCases::Create.new(post_params).call
 
-    if @post.save
+    if @post.valid?
       render json: @post, status: :created, location: @post
     else
       render json: @post.errors, status: :unprocessable_entity
@@ -42,6 +46,8 @@ class PostsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
+    # rescue ActiveRecord::RecordNotFound
+    #   render json: { error: "post not found"}
     end
 
     # Only allow a list of trusted parameters through.
