@@ -122,20 +122,29 @@ RSpec.describe "Posts requests", type: :request do
     let(:params) do
       {
         post: {
-          title: "title",
+          title: title,
           body: "body updated"
         }
       }
     end
+    let(:title) { "title" }
 
     subject { post("/posts", params: params) }
 
-    it "retuns success status" do
+    it "retuns created status" do
       subject
       expect(response.status).to eq(201)
     end
-  end
 
+    context "when invalid post params" do
+      let(:title) { nil }
+
+      it "retuns unprocessable_entity status" do
+        subject
+        expect(response.status).to eq(422)
+      end
+    end
+  end
 
   describe "PUT /posts/:id" do
     let(:post) { create :post, title: "title", body: "body" }
