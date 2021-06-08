@@ -14,7 +14,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   def show
-    render json: @post
+    render json: Posts::Representers::Single.new(@post).call
   end
 
   # POST /posts
@@ -30,10 +30,11 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1
   def update
-    if @post.update(post_params)
-      render json: @post
+    post = Posts::UseCases::Update.new(params[:id], post_params).call
+    if post.errors.any?
+      render json: post.errors, status: :unprocessable_entity
     else
-      render json: @post.errors, status: :unprocessable_entity
+      render json: post
     end
   end
 

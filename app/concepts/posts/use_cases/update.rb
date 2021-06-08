@@ -8,14 +8,15 @@ module Posts
 
       def call
         post.update(params)
+        post
       end
 
       private
 
-      attr_reader :post_id, :params
+      attr_reader :post_id, :params, :post
 
       def post
-        Post.find(post_id)
+        @post ||= Post.find(post_id)
       end
     end
   end

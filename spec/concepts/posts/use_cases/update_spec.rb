@@ -21,12 +21,16 @@ RSpec.describe Posts::UseCases::Update do
     end
 
     it "retuns true" do
-      expect(subject).to eq(true)
+      expect(subject).to eq(post)
     end
 
-    it { is_expected.to eq true }
-    it { is_expected.to be_truthy } # !!!
-    it { expect("siema").to be_truthy } # !!!
+    it "returns post object without errors" do
+      expect(subject.errors).to be_empty
+    end
+
+    # it { is_expected.to eq true }
+    # it { is_expected.to be_truthy } # !!!
+    # it { expect("siema").to be_truthy } # !!!
 
     context "when params invalid" do
       let(:title) { nil }
@@ -35,7 +39,15 @@ RSpec.describe Posts::UseCases::Update do
         expect { subject }.not_to change { post.reload.title }
       end
 
-      it { is_expected.to eq false }
+      it { is_expected.to eq post }
+
+      it "returns post object with errors array not empty" do
+        expect(subject.errors).not_to be_empty
+      end
+
+      it "returns post object with proper errors" do
+        expect(subject.errors).to match_array(["Title can't be blank"])
+      end
     end
   end
 end
