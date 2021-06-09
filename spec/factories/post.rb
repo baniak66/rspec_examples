@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :post do
-    sequence(:title) { |n| "Post title no #{n}" }
-    body  { "Lorem ipsum" }
+    title { "test title" }
+    body { "test body" }
   end
 end

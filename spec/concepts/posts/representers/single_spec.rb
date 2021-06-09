@@ -1,21 +1,18 @@
 require "rails_helper"
 
 RSpec.describe Posts::Representers::Single do
-  let(:post) { create :post }
-  let(:instance) { described_class.new(post) }
-  let(:expected_hash) do
-    {
-      id: post.id,
-      title: post.title,
-      body: post.body
-    }
-  end
-
-  subject { instance.call }
-
   describe ".call" do
-    it "returns hash with proper structure" do
-      expect(subject).to eq(expected_hash)
+    let(:post) { create :post }
+    let(:instance) { Posts::Representers::Single.new(post) }
+
+    it "returns proper hash" do
+      expect(instance.call).to eq(
+        {
+          id: post.id,
+          title: post.title,
+          body: post.body
+        }
+      )
     end
   end
 end

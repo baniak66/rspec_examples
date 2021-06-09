@@ -7,7 +7,12 @@ module Posts
 
       def call
         posts.map do |post|
-          Posts::Representers::Single.new(post).call
+          # Posts::Representers::Single.new(post).call
+          {
+            id: post.id,
+            title: post.title,
+            body: post.body
+          }
         end
       end
 
