@@ -1,2 +1,2 @@
 # README
-Rspec exercises 
+Rspec exercises - updated 
